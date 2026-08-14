@@ -6,7 +6,7 @@ SIGGRAPH 2026 conference track
 
 ## TODOs
 
-- [x] Preliminary code release
+- [x] Preliminary code release (2026/8/14)
 - [ ] Release all config files
 - [ ] Release the scripts to generate data used by all experiments in the paper
 - [ ] Finish the details in [running instructions](#instructions)
