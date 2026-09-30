@@ -1,0 +1,24 @@
+# Task config template for classification. Replaces the `camera` and `classification` sections of base.yaml.
+
+classification:
+  class_file: meshes/modelnet10_shape_names.txt   # one class name per line; the order must match the checkpoint's labels
+  ckpt_path: ckpt/modelnet10.pth                  # PointNet++ MSG classifier checkpoint
+  point_batch_size: 120                           # samples/candidates per PointNet++ forward pass
+  subsample_points: 1024                          # points fed to the classifier; null = use all points (between 128 and points.max_points)
+  # entropy_threshold: 0.75                       # only for exp.acquisition: mixed
+
+camera:
+  num_cameras: 120   # candidate views on the Fibonacci sphere
+  radius: 2.5        # sphere radius; larger than scan.mesh_normalization_radius
+  start_idx: 0       # index of the initial view; overridden by --start_idx or -sil
+  # camera_idx_seed: 514   # if start_idx is unset, sphere/fps/uncertainty draw a random start with this seed
+  #                        # (random and all gradient-descent strategies need start_idx)
+
+  # Extra keys for the gradient-descent strategies (--exp_type msgd | sphere_msgd):
+  # num_starts: 6
+  # multi_start_batch_size: 6   # starts optimized in parallel; null = all at once
+  # optimizer: Adam             # any class in torch.optim
+  # learning_rate: 0.0001
+  # num_iterations: 20
+  # save_every: 1
+  # optimizer_kwargs: {}        # optional, passed to the optimizer

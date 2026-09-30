@@ -1,0 +1,25 @@
+# Task config template for part segmentation. Replaces the `camera` and `partseg` sections of base.yaml.
+
+partseg:
+  ckpt_path: ckpt/shapenet_partseg.pth   # PointNet++ MSG part-segmentation checkpoint
+  target_points: 60                      # points a part needs to count as found: utility = sum_p tanh(soft count_p / target_points)
+  point_batch_size: 120                  # samples/candidates per PointNet++ forward pass
+  # Optional. Root of the ShapeNet part-annotation benchmark (shapenetcore_partanno_segmentation_benchmark_v0_normal).
+  # When set, the ground-truth part segments are saved to gt_segments.npz. It does not affect view selection.
+  data_path: null   # e.g. /path/to/shapenetcore_partanno_segmentation_benchmark_v0_normal
+
+camera:
+  num_cameras: 120   # candidate views on the Fibonacci sphere
+  radius: 2.0        # sphere radius; larger than scan.mesh_normalization_radius
+  start_idx: 0       # index of the initial view; overridden by --start_idx or -sil
+  # camera_idx_seed: 0   # if start_idx is unset, sphere/fps/uncertainty draw a random start with this seed
+  #                      # (random and all gradient-descent strategies need start_idx)
+
+  # Extra keys for the gradient-descent strategies (--exp_type msgd | sphere_msgd | iterative_sphere_msgd):
+  # num_starts: 6
+  # multi_start_batch_size: 2   # starts optimized in parallel; null = all at once
+  # optimizer: Adam             # any class in torch.optim
+  # learning_rate: 0.005
+  # num_iterations: 20
+  # save_every: 2
+  # optimizer_kwargs: {}        # optional, passed to the optimizer

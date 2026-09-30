@@ -1,0 +1,32 @@
+# Base config template for heat diffusion.
+# Usage: python experiments/main_heat.py <exp_dir> <this file> <heat.yaml> -m <mesh> ...
+# The driver loads this file, then does a shallow `config.update(task_yaml)`, so the task file
+# replaces whole top-level sections (here: `camera` and `heat_diffusion`).
+# Supported --exp_type values: sphere, fps, random, uncertainty.
+
+points:
+  subsample_points: 1024   # points kept (FPS) when the task is evaluated on the accumulated scan
+  scan_batch_size: 34      # candidate views rasterized per batch during sphere search (lower it if out of memory)
+  max_points: 4096         # the accumulated scan is FPS-subsampled to this size before SPSR
+
+scan:
+  resolution: [50, 50]             # depth image [H, W]
+  fov: 30                          # camera field of view (degrees)
+  mesh_normalization_radius: 2.5   # the mesh is normalized to a sphere of this radius
+
+camera: null  # defined in the task config
+
+spsr:
+  noise_level: 0.01          # std of the noise added to scanned points and normals
+  amortization_density: 50   # grid resolution of the amortized cross-covariance interpolator
+  num_samples: null          # posterior samples per step; null = rows in <precompute_dir>/000.npy. Otherwise a multiple of it.
+  num_ray_samples: 100       # points per ray; only read by `--exp_type uncertainty`
+  batch_size: 6400           # evaluation batch size for the SPSR mean on the grid
+  # grid_density, grid_radius, truncation_n, lengthscale and variance are NOT set here.
+  # They are read from <exp.precompute_dir>/config.json (see scripts/precompute_f_samples.py).
+
+exp:
+  precompute_dir: precompute/l_5e-3_v_0.2   # prior f samples, needs >= (num_steps - 1) * (num_samples / rows per file) files
+  step_reconstruction: false   # keep false: `true` crashes in BaseRunner.run (the call omits `step_ckpt`)
+  acquisition: ei_heat         # only a label: the heat acquisition is fixed (expected improvement of -min u)
+  num_steps: 10                # total views, including the initial one

@@ -1,0 +1,18 @@
+# Task config template for heat diffusion. Replaces the `camera` and `heat_diffusion` sections of base.yaml.
+
+camera:
+  num_cameras: 100   # candidate views on the Fibonacci sphere
+  radius: 3.0        # sphere radius; larger than scan.mesh_normalization_radius
+  start_idx: 0       # index of the initial view; required for sphere and random (they read it directly)
+
+heat_diffusion:
+  heat_source:
+    type: random_point   # random_point: a random mesh vertex per run (seeded by --seed) | fixed_point: the vertex vert_idx
+    # vert_idx: 2732     # only for fixed_point
+    power: 10.0          # source strength, applied to all vertices within `radius` of the center
+    radius: 0.1          # radius of the source region
+  T: 5.0                 # final simulation time
+  n_euler_steps: 20      # implicit Euler steps from 0 to T
+  init_temperature:
+    type: constant       # the only supported type
+    value: 0.0
