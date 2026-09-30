@@ -15,20 +15,14 @@ SIGGRAPH 2026 conference track
 
 ### Setup
 
-**TODO:** Will update a complete list in `pyproject.toml` in the future.
+The original experiments used Python 3.11, `torch 2.5.1+cu121` and `pytorch3d 0.7.8`.
 
-Necessary libraries:
-- PyTorch with GPU (`torch 2.5.1+cu121` in original experiments)
-- `pytorch3d`: May need to manually build and install from source from [their official repo](https://github.com/facebookresearch/pytorch3d) if no pre-compiled wheels match your local environment (PyTorch/CUDA pair)
-- `numpy`, `scipy`
-- `PyYAML`
-- `easydict`, `tqdm`, `matplotlib`, `plotly`
-- `trimesh`, `point-cloud-utils`, `gpytoolbox`, `robust-laplacian`
-
-After installing all packages above, run
-```
-pip install -e .
-```
+1. Install [PyTorch](https://pytorch.org/get-started/locally/) with CUDA support.
+2. Install [PyTorch3D](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md) for your PyTorch/CUDA pair. If no prebuilt wheel matches, build it from source. It is not listed in `pyproject.toml` because it must be built against the installed PyTorch.
+3. Install this package and its remaining dependencies:
+   ```
+   pip install -e .
+   ```
 
 ### Quick start
 
